@@ -1,0 +1,15 @@
+.footer{
+  /*border: 1px solid red;*/
+  font-family: 'Inter', Helvetica, sans-serif;
+  padding: 0;
+  max-width: 886px;
+  margin: 0 auto;
+}
+
+@media  screen and (max-width: 585px){
+  .footer{
+    /*border: 1px solid wheat;*/
+    padding-top: 14px;
+    margin: 0 19px;
+  }
+}

@@ -1,0 +1,16 @@
+.header__exit {
+  border: none;
+  background: none;
+  color: #a9a9a9;
+  padding: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  cursor: pointer;
+  transition: opacity 0.2s linear;
+}
+.header__exit:hover {
+  opacity: 0.6;
+}

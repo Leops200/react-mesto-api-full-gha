@@ -1,0 +1,6 @@
+.profile{
+  /*border: 1px solid #fff;*/
+  font-family: 'Inter', Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+}

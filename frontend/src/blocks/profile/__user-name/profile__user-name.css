@@ -1,0 +1,22 @@
+.profile__user-name{
+  /*border: 1px solid rgb(175, 250, 135);*/
+  max-width: 300px;
+  color: #fff;
+  margin: 23px 0 14px 0;
+  grid-area: name;
+  font-size: 42px;
+  line-height: 48px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media  screen and (max-width: 689px) {
+  .profile__user-name {
+    font-size: 27px;
+    line-height: 33px;
+    margin: 26px 0 10px 20px;
+    max-width: 225px;
+  }
+}

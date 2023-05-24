@@ -1,7 +1,4 @@
-/*
-  Здравствуйте Геннадий. Спасибо Вам за очередное прекрасное ревью! Я постарался поправить все критические замечания (Проверьте пожалуйста, действительно ли всё получилось, и работает как-положено?). Отдельное спасибо за пункты "можно лучше"! Если я что-то не поправил сразу, так только от нехватки времени, но сохранил себе все пометочки, при случае - обязательно подправлю.
-  Спасибо
-*/
+
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -42,7 +39,7 @@ function App() {
   const navigate = useNavigate();
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [infoTooltipStatus, setInfoTooltipStatus] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     isLogged &&
@@ -130,7 +127,7 @@ function App() {
       .finally(() => { setIsAddPlacePopupChanging(false); })
   }
 
-
+/*
   // Закрытие по ESC
   const isOpen = isAcceptPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen
 
@@ -146,6 +143,7 @@ function App() {
       return () => window.removeEventListener("keydown", handleEscClose);
     }
   }, [isOpen]);
+  */
 
   // закрываем попапы
   const closePopups = useCallback(() => {
@@ -232,7 +230,7 @@ function App() {
     }
   }, [navigate]);
 
-  useEffect(() => { checkToken(); }, []);
+  useEffect(() => { checkToken(); }, [checkToken]);
 
   const onSignOut = useCallback(() => {
     localStorage.removeItem("jwt");
@@ -257,7 +255,7 @@ function App() {
             path="/sign-in" element=
             {
               <Login onLogin={onLogin}
-                onLoading={isLoading} />
+             />
             }
           />
           <Route

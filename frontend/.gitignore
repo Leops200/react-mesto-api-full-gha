@@ -1,1 +1,13 @@
+build
 
+.env
+.DS_Store
+.idea
+.vscode
+
+npm-debug.log*
+logs
+*.log
+
+node_modules
+.npm

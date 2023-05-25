@@ -1,5 +1,4 @@
 
-
 class Api {
   constructor(options) {
     this._options = options;
@@ -103,9 +102,11 @@ _makeRequest(url, options) {
 }
 
 const api = new Api({
-  baseUrl:"https://mesto.nomoreparties.co/v1/cohort-59",
+  baseUrl:"https://api.mymesto15front.nomoredomains.monster/",
   headers:{authorization: "f12b044f-995b-4f4a-bc14-fbb855775aa8",
   "Content-Type": "application/json"}
 });
 
 export default api;
+
+// https://mesto.nomoreparties.co/v1/cohort-59"

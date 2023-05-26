@@ -1,6 +1,7 @@
 
 // удалил файл auth, а код подправил и добавил сюда
-const BASE_AUTH_URL = "https://localhost:3002";
+const BASE_AUTH_URL = "https://mesto.nomoreparties.co/v1/cohort-59";
+// https://localhost:3002
 
 function makeRequest(url, method, body) {
   const headers = { "Content-Type": "application/json" };

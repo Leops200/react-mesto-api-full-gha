@@ -1,6 +1,6 @@
 
 // удалил файл auth, а код подправил и добавил сюда
-const BASE_AUTH_URL = "https://mesto.nomoreparties.co/v1/cohort-59";
+const BASE_AUTH_URL = "https://api.mymesto15front.nomoredomains.monster";
 // https://localhost:3002
 
 function makeRequest(url, method, body) {

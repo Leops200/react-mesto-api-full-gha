@@ -1,5 +1,7 @@
 
-const BASE_AUTH_URL = "https://auth.nomoreparties.co";
+const BASE_AUTH_URL = "https://localhost:3002";
+
+// https://auth.nomoreparties.co
 
 function makeRequest(url, method, body, token) {
   const headers = { "Content-Type": "application/json" };

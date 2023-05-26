@@ -1,4 +1,7 @@
-
+/*
+  Здравствуйте Геннадий. Спасибо Вам за очередное прекрасное ревью! Я постарался поправить все критические замечания (Проверьте пожалуйста, действительно ли всё получилось, и работает как-положено?). Отдельное спасибо за пункты "можно лучше"! Если я что-то не поправил сразу, так только от нехватки времени, но сохранил себе все пометочки, при случае - обязательно подправлю.
+  Спасибо
+*/
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -13,9 +16,9 @@ import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-// import api from '../utils/api.js';
+import api from '../utils/api.js';
 import PopupAccept from './PopupAccept.js';
-import * as api from '../utils/api.js';
+import * as auth from '../utils/auth.js';
 import ProtectedRouteElement from "./ProtectedRoute.js";
 import InfoTooltip from "./InfoTooltip.js";
 
@@ -39,7 +42,7 @@ function App() {
   const navigate = useNavigate();
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [infoTooltipStatus, setInfoTooltipStatus] = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     isLogged &&
@@ -127,23 +130,22 @@ function App() {
       .finally(() => { setIsAddPlacePopupChanging(false); })
   }
 
-  /*
-    // Закрытие по ESC
-    const isOpen = isAcceptPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen
-  
-    useEffect(() => {
-      function handleEscClose(e) {
-        if (e.key === "Escape") {
-          closePopups();
-          console.log('ESCpress');
-        }
+
+  // Закрытие по ESC
+  const isOpen = isAcceptPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen
+
+  useEffect(() => {
+    function handleEscClose(e) {
+      if (e.key === "Escape") {
+        closePopups();
+        console.log('ESCpress');
       }
-      if (isOpen) {
-        window.addEventListener("keydown", handleEscClose);
-        return () => window.removeEventListener("keydown", handleEscClose);
-      }
-    }, [isOpen]);
-    */
+    }
+    if (isOpen) {
+      window.addEventListener("keydown", handleEscClose);
+      return () => window.removeEventListener("keydown", handleEscClose);
+    }
+  }, [isOpen]);
 
   // закрываем попапы
   const closePopups = useCallback(() => {
@@ -168,7 +170,7 @@ function App() {
 
   const onLogin = useCallback(async (email, password) => {
     try {
-      const data = await api.login(email, password);
+      const data = await auth.login(email, password);
       if (data.token) {
         localStorage.setItem("jwt", data.token);
         setIsLoggedIn(true);
@@ -188,10 +190,9 @@ function App() {
   const onRegister = useCallback(async (email, password) => {
 
     try {
-      const data = await api
+      const data = await auth
         .registration(email, password);
       if (data) {
-        // setIsLoggedIn(true);
         setInfoTooltipStatus("ok")
         navigate("/sign-in", { replace: true });
       };
@@ -212,39 +213,32 @@ function App() {
   const checkToken = useCallback(async () => {
     //после отладки удалить!
     //localStorage.removeItem("jwt");
-    /* const token = localStorage.getItem("jwt");
-    if (token) { */
-    try {
-      const user = await api.checkToken();
-      console.log(`user(check token): ${user}`);
-      if (!user) {
-        throw console.log("invalid userData");
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      try {
+        const user = await auth.checkToken(token);
+        if (!user) {
+          throw console.log("invalid userData");
+        }
+        setIsLoggedIn(true);
+        setMailName(user.data.email);
+        navigate("/", { replace: true });
       }
-      setIsLoggedIn(true);
-      setMailName(user.email);
-      console.log(`user: ${user}`);
-      navigate("/", { replace: true });
+      catch (err) { console.log(err) }
+      finally { console.log("check token"); }
     }
-    catch (err) { console.log(err); }
-    finally { console.log("check token"); }
-    /* }
-     else {
+    else {
       console.log("jwt invalid !")
-    } */
+    }
   }, [navigate]);
 
-  useEffect(() => { checkToken(); }, [checkToken]);
+  useEffect(() => { checkToken(); }, []);
 
-  const onSignOut = useCallback(async () => {
-    try {
-      const data = await api.logout();
-      if (data) {
-        //localStorage.removeItem("jwt");
-        setIsLoggedIn(false);
-        setMailName("");
-        navigate("/sign-in", { replace: true });
-      }
-    } catch (err) { console.error(err); }
+  const onSignOut = useCallback(() => {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setMailName("");
+    navigate("/sign-in", { replace: true });
   }, [navigate]);
 
   return (
@@ -263,7 +257,7 @@ function App() {
             path="/sign-in" element=
             {
               <Login onLogin={onLogin}
-              />
+                onLoading={isLoading} />
             }
           />
           <Route

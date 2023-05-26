@@ -1,35 +1,12 @@
 
-// удалил файл auth, а код подправил и добавил сюда
-const BASE_AUTH_URL = "https://api.mymesto15front.nomoredomains.monster";
-// https://localhost:3002
 
-function makeRequest(url, method, body) {
-  const headers = { "Content-Type": "application/json" };
-  const config = { method, headers, credentials: "include" };
-
-  if (body !== undefined) {
-    config.body = JSON.stringify(body);
+class Api {
+  constructor(options) {
+    this._options = options;
+    this._baseUrl = this._options.baseUrl;
+    this._headers = this._options.headers;
   }
-  return fetch(`${BASE_AUTH_URL}${url}`, config).then((res) => {
-    return res.ok
-      ? res.json()
-      : Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-  });
-}
 
-export function registration({ password, email }) {
-  return makeRequest("/signup", "POST", { password, email });
-}
-
-export function login({ password, email }) {
-  return makeRequest("/signin", "POST", { password, email });
-}
-
-export function checkToken() {
-  return makeRequest("/users/me", "GET");
-}
-
-/*
   _checkRes(res) {
     if (!res.ok) {
         return Promise.reject(`Ошибка: ${res.status}`);
@@ -40,34 +17,59 @@ export function checkToken() {
 _makeRequest(url, options) {
   return fetch(url, options).then(this._checkRes)
 }
-*/
 
-export function getInitCards() {
-    return makeRequest("/cards", "GET");
+  getInitCards() {
+    return this._makeRequest(`${this._baseUrl}/cards`, {
+      headers: this._headers
+    });
   }
 
-export function getUserInfo() {
-    return makeRequest("/users/me", "GET");
+  getUserInfo() {
+    return this._makeRequest(`${this._baseUrl}/users/me`, {
+      headers: this._headers
+    });
   }
 
-  export function addAvatar({ avatar }) {
+  addAvatar(data) {
     console.log('avatar data:');
-    console.log({ avatar });
-    return makeRequest("/users/me/avatar", "PATCH",
-    { avatar });
+    console.log(data);
+    return this._makeRequest(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: data.avatar
+      })
+    })
   };
 
-  export function addInfo({ name, about }) {
-    return makeRequest("/users/me", "PATCH", { name, about });
+  addInfo(data) {
+    return this._makeRequest(`${this._baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: data.name,
+        about: data.about
+      })
+    })
   };
   
   //добавляем карточку
-  export function addNewCard({ name, link }) {
-    return makeRequest("/cards", "POST", { name, link });
+  addNewCard(data) {
+    return this._makeRequest(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: data.name,
+        link: data.link,
+      })
+    });
   };
 
-  export function deleteCard(id) {
-    return makeRequest(`/cards/${id}`, "DELETE");
+  deleteCard(id) {
+    return this._makeRequest(`${this._baseUrl}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers
+    })
   };
 /*
   addCardLike(cardId) {
@@ -85,29 +87,25 @@ export function getUserInfo() {
   };
 */
   // объединим функции добавления и удаления лайка (addCardLike, deleteCardLike)
-  export function changeLikeStatus(id, isLiked) {
-    let flag;
-  isLiked ? (flag = "DELETE") : (flag = "PUT");
-  return makeRequest(`/cards/${id}/likes`, flag);
+  changeLikeStatus(id, isLiked) {
+    if (isLiked) {
+      return this._makeRequest(`${this._baseUrl}/cards/${id}/likes`, {
+        headers: this._headers,
+          method: "PUT",
+      });
+    } else {
+      return this._makeRequest(`${this._baseUrl}/cards/${id}/likes`, {
+        headers: this._headers,
+        method: "DELETE",
+      });
+    }
   };
-
-  // Разлогин
-export function logout() {
-  return makeRequest("/users/me", "DELETE");
 }
-
-  /*
-}
-
 
 const api = new Api({
-  baseUrl:"https://localhost:3002",
+  baseUrl:"https://mesto.nomoreparties.co/v1/cohort-59",
   headers:{authorization: "f12b044f-995b-4f4a-bc14-fbb855775aa8",
   "Content-Type": "application/json"}
 });
 
 export default api;
-*/
-
-// https://mesto.nomoreparties.co/v1/cohort-59"
-// https://api.mymesto15front.nomoredomains.monster/

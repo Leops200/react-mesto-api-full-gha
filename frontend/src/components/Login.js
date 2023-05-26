@@ -27,7 +27,7 @@ function Login({ onLogin }) {
           value={values.email || ""}
           onChange={handleInput}
           required
-          autoComplete="on"
+          autoComplete="off"
         />
         <input
           className="login__input"

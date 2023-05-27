@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 130.139.34.115
+IP-адрес: 130.193.34.115
 
 Frontend https://mymesto15front.nomoredomains.monster
 

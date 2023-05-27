@@ -15,8 +15,8 @@ const { errLog, reqLog } = require('./middlewares/logger');
 // =====================================================
 // Слушаем 3000 порт
 // const { PORT = 3000 } = process.env;
-const PORT = process.env || 3000;
-const DATA_BASE = process.env || 'mongodb://localhost:27017/mestodb';
+const PORT = process.env.PORT || 3000;
+const DATA_BASE = process.env.DATA_BASE || 'mongodb://localhost:27017/mestodb';
 
 const app = express();
 

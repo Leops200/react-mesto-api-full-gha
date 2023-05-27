@@ -65,7 +65,7 @@ function App() {
 
   useEffect(() => {
     handleTokenCheck();
-  }, []);
+  }, [handleTokenCheck]);
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
@@ -198,7 +198,7 @@ function App() {
         setIsCardsLoading(false);
       }
     },
-    [navigate]
+    [navigate, handleTokenCheck]
   );
 
   const handleRegistration = useCallback(

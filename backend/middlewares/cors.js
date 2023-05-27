@@ -1,18 +1,15 @@
 const allowedCors = [
-  'https://project-mesto.nomoredomains.monster',
-  'http://project-mesto.nomoredomains.monster',
-  'https://api.project-mesto.nomoredomains.monster/users/me',
-  'https://api.project-mesto.nomoredomains.monster/cards',
-  'https://api.project-mesto.nomoredomains.monster/signup',
+  'https://mymesto15front.nomoredomains.monster',
+  'http://mymesto15front.nomoredomains.monster',
+  'https://api.mymesto15front.nomoredomains.monster/users/me',
+  'https://api.mymesto15front.nomoredomains.monster/cards',
+  'https://api.mymesto15front.nomoredomains.monster/signup',
   'http://localhost:3000',
-  'https://localhost:3000',
   'http://localhost:3001',
-  'https://localhost:3001',
   'http://localhost:3002',
-  'https://localhost:3002',
   'http://localhost:4000',
-  'https://130.193.48.152',
-  'http://130.193.48.152',
+  'https://130.193.34.115',
+  'http://130.193.34.115',
 ];
 
 module.exports = (req, res, next) => {

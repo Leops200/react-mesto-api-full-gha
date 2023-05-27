@@ -18,9 +18,10 @@ const PORT = process.env.PORT || 3000;
 const DATA_BASE = process.env.DATA_BASE || 'mongodb://localhost:27017/mestodb';
 
 const app = express();
-app.use(cors);
 
 mongoose.connect(DATA_BASE);
+
+app.use(cors);
 /*
 app.post('/signup', (req, res) => {
   const {

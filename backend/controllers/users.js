@@ -18,12 +18,12 @@ const userCheck = (req, res, upData, next) => {
   console.log(upData);
   User.findById(upData)
     .orFail()
-    .then((user) => res.send({ upData: user }))
+    .then((user) => res.send(user))
     .catch(next);
 };
 //= ====================================================
 module.exports.getUserId = (req, res, next) => {
-  const { reqData } = req.params.userId;
+  const reqData = req.params.userId;
   // console.log('requiredData:');
   // console.log(requiredData);
   userCheck(req, res, reqData, next);
@@ -47,17 +47,10 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((user) => {
-      const newUser = {
-        ...user.toObject(),
-        password: undefined,
-        // about: undefined,
-        // name: undefined,
-        // avatar: undefined,
-      };
-      res.status(CREATED_CODE)
-        .send({ data: newUser });
+      const data = user.toObject();
+      delete data.password;
+      res.status(CREATED_CODE).send(data);
     })
-    // const data = user.toObject();
     .catch(next);
 };
 //= ====================================================
@@ -94,13 +87,12 @@ module.exports.login = (req, res, next) => {
           expiresIn: '7d',
         },
       );
-      /* res.cookie('jwt', token, {
+      res.cookie('jwt', token, {
         httpOnly: true,
         sameSite: true,
         maxAge: 3600000 * 24 * 7,
-      }); */
-      // res.send({ message: 'Вход выполнен' }); // для авторизации в куках
-      res.send({ token });
+      });
+      res.send({ message: 'Вход выполнен' });
       console.log('выдан токен:');
       console.log(token);
       console.log(`userId: ${user._id}`);

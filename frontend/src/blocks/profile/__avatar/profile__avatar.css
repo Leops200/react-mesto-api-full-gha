@@ -1,15 +1,13 @@
-.profile__avatar{
-  /*border: 1px solid goldenrod;*/
+.profile__avatar {
   width: 120px;
   height: 120px;
-  max-width: 100%;
-  object-fit: cover;
   border-radius: 50%;
-  margin: 0 30px 0 0;
+  object-fit: cover;
 }
-
-@media  screen and (max-width: 585px){
-  .profile__avatar{
-    margin: 0;
+          
+@media screen and (max-width: 775px) {
+  .profile__avatar {
+    align-self: center;
+    margin-right: 0;
   }
 }

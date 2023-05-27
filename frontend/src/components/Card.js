@@ -1,42 +1,56 @@
-import {useContext} from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
-function Card({card, onCardClick, onCardDelete, onCardLike}) {
-
+function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+  const isLiked = card.likes.some((i) => {
+    return i._id === currentUser._id
+  });
 
   function handleClick() {
     onCardClick(card);
-  }
-
-  function handleDelClick() {
-    onCardDelete(card);
   }
 
   function handleLikeClick() {
     onCardLike(card);
   }
 
-  return(
-    <div className="card card-template">
-      <div>
+  function handleDeleteClick() {
+    onCardDelete(card);
+  }
+
+  return (
+    <div className="elements__container">
+      <img
+        className="elements__item"
+        alt={card.name}
+        src={card.link}
+        onClick={handleClick}
+      />
+      <div className="elements__context">
+        <h2 className="elements__title">{card.name}</h2>
+        <div className="element__like">
+          <button
+            type="button"
+            className={`elements__button-like ${
+              isLiked && "elements__button-like_active"
+            }`}
+            onClick={handleLikeClick}
+          ></button>
+          <span className="element__number">{card.likes.length}</span>
+        </div>
         {isOwn && (
-          <button className="button card__del-btn" type="button" onClick={handleDelClick}></button>
+          <button
+            type="button"
+            className="elements__button-delete"
+            onClick={handleDeleteClick}
+          />
         )}
       </div>
-      <img src={card.link} alt={card.name} className="card__image"
-      onClick={handleClick}/>
-      <div className="card__about">
-        <h2 className="card__title">{card.name}</h2>
-        <div className="card__like">
-          <button className={`button card__like-btn ${isLiked && "card__like-btn_on"}`} onClick={handleLikeClick} type="button"></button>
-          <span className="card__like-count">{card.likes.length}</span>
-        </div>
-      </div>
     </div>
-  )
-};
+  );
+}
 
 export default Card;

@@ -1,48 +1,61 @@
-import React from 'react';
-import useForm from '../hooks/useFormsInputs.js';
-//import { Link, useNavigate } from 'react-router-dom';
-//import * as auth from '../auth';
-
+import React from "react";
+import useForm from "../hooks/useForm";
+import { useEffect } from "react";
 
 function Login({ onLogin }) {
-  const { values, handleInput } = useForm({});
-
+  const { values, handleChange, reset } = useForm({});
 
   function handleSubmit(e) {
     e.preventDefault();
     onLogin(values);
-    console.log("in login === values: ")
-    console.log(values);
   }
 
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
   return (
-    <section className="login">
-      <h2 className="login__title">Вход</h2>
-      <form className="login__form" onSubmit={handleSubmit}>
-        <input
-          className="login__input"
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={values.email || ""}
-          onChange={handleInput}
-          required
-          autoComplete="off"
-        />
-        <input
-          className="login__input"
-          name="password"
-          type="password"
-          placeholder="Пароль"
-          value={values.password || ""}
-          onChange={handleInput}
-          required
-          autoComplete="off"
-        />
-        <button className="login__submit" type="submit">
-          Войти
-        </button>
+    <section className="auth">
+      <h2 className="auth__title">Вход</h2>
+      <form className="auth__form" onSubmit={handleSubmit} id="form__auth">
+        <div className="auth__fieldset">
+          <input
+            className="auth__input auth__input_type_email"
+            name="email"
+            type="email"
+            required
+            id="email"
+            placeholder="Email"
+            onChange={handleChange}
+            value={values.email || ""}
+            autoComplete="on"
+          />
+          <span
+            id="email-error"
+            className="popup__error popup__error_visible"
+          ></span>
+        </div>
+        <div className="auth__fieldset">
+          <input
+            className="auth__input auth__input_type_password"
+            name="password"
+            type="password"
+            required
+            id="password"
+            placeholder="Пароль"
+            onChange={handleChange}
+            value={values.password || ""}
+            autoComplete="on"
+          />
+          <span
+            id="password-error"
+            className="popup__error popup__error_visible"
+          ></span>
+        </div>
       </form>
+      <button type="submit" className="auth__button" form="form__auth">
+        Войти
+      </button>
     </section>
   );
 }

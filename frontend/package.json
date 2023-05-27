@@ -1,6 +1,5 @@
 {
-  "homepage": "https://leops200.github.io/react-mesto-auth",
-  "name": "mesto-react-auth",
+  "name": "react-mesto-api-full-gha",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -39,8 +38,19 @@
       "last 1 safari version"
     ]
   },
+  "description": "**Проек включает *4 блока*:** 1. Шапка сайта 2. Профиль 3. Фотографии 4. Подвал сайта",
   "main": "index.js",
   "devDependencies": {
     "gh-pages": "^5.0.0"
-  }
+  },
+  "author": "NadezdaPL",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/NadezdaPL/react-mesto-api-full-gha.git"
+  },
+  "bugs": {
+    "url": "https://project-mesto.nomoredomains.monster/issues"
+  },
+  "homepage": "https://project-mesto.nomoredomains.monster/"
 }

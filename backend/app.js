@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const router = require('./routes/index');
 const errProcess = require('./middlewares/errorsProcess');
 const cors = require('./middlewares/cors');
+const { errLog, reqLog } = require('./middlewares/logger');
 
 // const bcrypt = require('bcryptjs');
 // const User = require('./models/user');
@@ -59,7 +60,9 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(reqLog);
 app.use('/', router);
+app.use(errLog);
 app.use(validationErrs());
 app.use(errProcess);
 

@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.project-mesto.nomoredomains.monster";
+export const BASE_URL = "https://api.mymesto15front.nomoredomains.monster/";
 
 // https://api.project-mesto.nomoredomains.monster
 

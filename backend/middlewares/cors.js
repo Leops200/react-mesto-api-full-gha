@@ -2,9 +2,9 @@ const allowedCors = [
   'https://mymesto15front.nomoredomains.monster',
   'http://mymesto15front.nomoredomains.monster',
   'http://localhost:3000',
+  'https://localhost:3000',
   'http://localhost:3001',
-  'http://localhost:3002',
-  'http://localhost:4000',
+  'https://localhost:3001',
   'https://130.193.34.115',
   'http://130.193.34.115',
 ];

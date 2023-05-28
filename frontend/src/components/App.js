@@ -157,6 +157,7 @@ function App() {
     setSelectedCard({});
   }, []);
 
+  /* отключаем проверку токена из заголовков
   const authIdent = useCallback((data) => {
     if (data.jwt) {
       localStorage.setItem("jwt", data.jwt);
@@ -165,12 +166,13 @@ function App() {
     }
     if (!data) throw console.log("invalid data")
   }, []);
-
+  */
+  // авторизация =========================================
   const onLogin = useCallback(async (email, password) => {
     try {
       const data = await auth.login(email, password);
-      if (data.token) {
-        localStorage.setItem("jwt", data.token);
+      if (data) {
+        //localStorage.setItem("jwt", data.token);
         setIsLoggedIn(true);
         navigate("/", { replace: true });
         setIsInfoTooltipOpen(false);
@@ -185,8 +187,8 @@ function App() {
   }, [navigate]
   );
 
+  // регистрация ============================================
   const onRegister = useCallback(async (email, password) => {
-
     try {
       const data = await auth
         .registration(email, password);
@@ -204,17 +206,18 @@ function App() {
   }, [navigate]);
 
   const infoTooltipOpen = () => {
-    authIdent(true);
+    // authIdent(true);
     console.log(setInfoTooltipStatus);
   }
 
-  const checkToken = useCallback(async () => {
+  // Здесь переделать проверку авторизации
+  const checkAuth = useCallback(async () => {
     //после отладки удалить!
     //localStorage.removeItem("jwt");
-    const token = localStorage.getItem("jwt");
-    if (token) {
+    // const token = localStorage.getItem("jwt");
+    // if (token) {
       try {
-        const user = await auth.checkToken(token);
+        const user = await auth.checkToken();
         if (!user) {
           throw console.log("invalid userData");
         }
@@ -224,13 +227,13 @@ function App() {
       }
       catch (err) { console.log(err) }
       finally { console.log("check token"); }
-    }
+    /* }
     else {
       console.log("jwt invalid !")
-    }
+    } */
   }, [navigate]);
 
-  useEffect(() => { checkToken(); }, [checkToken]);
+  useEffect(() => { checkAuth(); }, [checkAuth]);
 
   const onSignOut = useCallback(() => {
     localStorage.removeItem("jwt");

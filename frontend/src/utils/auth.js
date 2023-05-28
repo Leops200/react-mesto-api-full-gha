@@ -1,14 +1,16 @@
 
-const BASE_AUTH_URL = "localhost:3001";
+const BASE_AUTH_URL = "http://localhost:3001";
 
 //https://auth.nomoreparties.co
 
-function makeRequest(url, method, body, token) {
+function makeRequest(url, method, body) {
   const headers = { "Content-Type": "application/json" };
-  const config = { method, headers };
+  const config = { method, headers, credentials: "include" };
+  /* исключаем проверку токена 
   if (token !== undefined) {
     headers["Authorization"] = `Bearer ${token}`;
   }
+  */
   if (body !== undefined) {
     config.body = JSON.stringify(body);
   }

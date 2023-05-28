@@ -1,0 +1,16 @@
+.profile__user-box{
+  /*border: 1px solid rgb(255, 240, 30);*/
+  display: grid;
+  grid-template-columns: repeat(2, minmax(min-content, max-content));
+  grid-template-rows: repeat(2, minmax(min-content, max-content));
+  grid-template-areas:
+  "name edit"
+  "act act";
+}
+
+@media  screen and (max-width: 585px){
+  .profile__user-box{
+    justify-items: center;
+    margin: 0 19px;
+  }
+}

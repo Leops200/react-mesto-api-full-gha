@@ -1,22 +1,15 @@
-.footer {
-  padding-left: 200px;
-  padding-bottom: 60px;
+.footer{
+  /*border: 1px solid red;*/
+  font-family: 'Inter', Helvetica, sans-serif;
+  padding: 0;
+  max-width: 886px;
+  margin: 0 auto;
 }
 
-@media screen and (max-width: 984px) {
-  .footer {
-    padding-left: 100px;
-  }
-}
-    
-@media screen and (max-width: 568px) {
-  .footer {
-    padding-left: 50px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .footer {
-    padding: 0 19px 36px;
+@media  screen and (max-width: 585px){
+  .footer{
+    /*border: 1px solid wheat;*/
+    padding-top: 14px;
+    margin: 0 19px;
   }
 }

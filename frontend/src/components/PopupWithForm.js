@@ -3,31 +3,26 @@ import React from "react";
 function PopupWithForm({
   name,
   isOpen,
-  onClose,
   title,
   buttonText,
+  onClose,
   onSubmit,
   ...props
 }) {
   return (
-    <section className={`popup popup__${name} ${isOpen ? "popup_opened" : ""}`}>
+    <div className={`popup popup__${name} ${isOpen ? "popup_opened" : ""}`}
+    onMouseDown={(e) => e.target === e.currentTarget && onClose()}
+    >
       <div className="popup__container">
-        <button className="popup__close" onClick={onClose}></button>
         <h2 className="popup__title">{title}</h2>
-        <form
-          className="popup__form"
-          name={`${name}`}
-          noValidate
-          onSubmit={onSubmit}
-        >
+        <button className="button popup__close-btn" onClick={onClose}></button>
+        <form className="popup__form" name={`${name}`} onSubmit={onSubmit}>
           {props.children}
-          <button type="submit" className="popup__button">
-            {buttonText}
-          </button>
+          <button className="button popup__form-btn-save" type="submit">{buttonText}</button>
         </form>
       </div>
-    </section>
+    </div>
   );
-}
+};
 
 export default PopupWithForm;

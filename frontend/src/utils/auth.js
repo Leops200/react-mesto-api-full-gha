@@ -1,41 +1,87 @@
-export const BASE_URL = "https://api.mymesto15front.nomoredomains.monster/";
 
-// https://api.project-mesto.nomoredomains.monster
+const BASE_AUTH_URL = "localhost:3001";
 
-function checkResponse(response) {
-  if (response.ok) {
-    return response.json();
+//https://auth.nomoreparties.co
+
+function makeRequest(url, method, body, token) {
+  const headers = { "Content-Type": "application/json" };
+  const config = { method, headers };
+  if (token !== undefined) {
+    headers["Authorization"] = `Bearer ${token}`;
   }
-  return Promise.reject(new Error(`Error: ${response.status}: ${response.statusText}`));
+  if (body !== undefined) {
+    config.body = JSON.stringify(body);
+  }
+  return fetch(`${BASE_AUTH_URL}${url}`, config).then((res) => {
+    return res.ok
+      ? res.json()
+      : Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+  });
 }
 
-export function register({ email, password }) {
-  return fetch(`${BASE_URL}/signup`, {
+export function registration({ password, email }) {
+  return makeRequest("/signup", "POST", { password, email });
+}
+
+export function login({ password, email }) {
+  return makeRequest("/signin", "POST", { password, email });
+}
+
+export function checkToken(token) {
+  return makeRequest("/users/me", "GET", undefined, token);
+}
+
+/*
+class Api {
+  constructor({baseUrl}) {
+    this._baseUrl = baseUrl;
+  }
+
+ _checkRes(res) {
+  if (!res.ok) {
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+  return res.json();
+}
+
+login = (email, password) => {
+  console.log("in auth, login: mail");
+  console.log(email);
+  return fetch(`${this._baseUrl}/signin`, {
     method: "POST",
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password })
-  }).then((response) => checkResponse(response));
-}
+    body: JSON.stringify({ email, password }),
+  }).then((response) => this._checkRes(response));
+};
 
-export function authorize({ email, password }) {
-  return fetch(`${BASE_URL}/signin`, {
+registration = (email, password) => {
+  console.log("in auth, reg: pass");
+  console.log(password);
+  return fetch(`${this._baseUrl}/signup`, {
     method: "POST",
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password })
-  }).then((response) => checkResponse(response));
-}
+    body: JSON.stringify({ email, password }),
+  }).then((response) => {
+    return this._checkRes(response);
 
-export const checkToken = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
+  });
+};
+
+checkToken = (jwt) => {
+  return fetch(`${this._baseUrl}/users/me`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${jwt}`,
     },
-  })
+  }).then((response) => this._checkRes(response));
+};
 }
+
+export const auth = new Api({baseUrl: "https://nomoreparties.co"});
+
+*/

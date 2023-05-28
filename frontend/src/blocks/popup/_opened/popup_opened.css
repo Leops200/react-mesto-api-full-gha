@@ -1,6 +1,4 @@
-.popup_opened {
-  display: flex;
-  align-items: flex-start;
-  visibility: visible;
-  opacity: 1;
+.popup_opened{
+  transform: scale(100%);
+  background-color: rgba(0, 0, 0, 0.5);
 }

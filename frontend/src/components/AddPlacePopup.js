@@ -1,70 +1,52 @@
-import { useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
-import useForm from "../hooks/useForm";
+import React, { useState, useEffect } from "react";
+import PopupWithForm from "./PopupWithForm.js";
 
+function PopupNewCardAdd({ isOpen, onClose, onSaving, onAddCard }) {
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, onChanging }) {
+  function handleAddCardName(e) { setName(e.target.value); };
 
- const { values, handleChange, reset } = useForm();
+  function handleAddLink(e) { setLink(e.target.value); };
 
   function handleSubmit(e) {
     e.preventDefault();
-    
-    onAddPlace({
-      title: values.title,
-      link: values.link
-    });
-  }
+    onAddCard({ name, link });
+  };
 
-  useEffect(() => {
-    reset()
-  }, [isOpen, reset]);
+  useEffect(() => { setName(""); setLink(""); }, [isOpen]);
 
   return (
     <PopupWithForm
-      onSubmit={handleSubmit}
-      isOpen={isOpen}
-      onClose={onClose}
-      name="add"
-      title="Новое место"
-      buttonText={onChanging ? "Создание..." : "Создать"}
-    >
-      <fieldset className="popup__fieldset">
-        <input
-          className="popup__input popup__input_type_nickname"
-          onChange={handleChange}
-          name="title"
-          type="text"
-          placeholder="Название"
-          required
-          minLength="2"
-          maxLength="30"
-          id="nickname"
-          value={values.title || ''}
-        />
-        <span
-          id="nickname-error"
-          className="popup__error popup__error_visible"
-        ></span>
-      </fieldset>
-      <fieldset className="popup__fieldset">
-        <input
-          className="popup__input popup__input_type_link"
-          onChange={handleChange}
-          name="link"
-          type="url"
-          placeholder="Ссылка на картинку"
-          required
-          id="link"
-          value={values.link || ''}
-        />
-        <span
-          id="link-error"
-          className="popup__error popup__error_visible"
-        ></span>
-      </fieldset>
+      isOpen={isOpen} onClose={onClose}
+      name='add'
+      title='Новое место'
+      buttonText={onSaving ? "Создание..." : 'Создать'}
+      onSubmit={handleSubmit}>
+      <input
+        className="popup__form-input popup__form-input_place-name"
+        type="text"
+        id="place-name"
+        placeholder="Название"
+        name="name"
+        required
+        onChange={handleAddCardName}
+        value={name || ""}
+      />
+      <span className="popup__form-inpt-err place-name-error" id="place-name-error">
+      </span>
+      <input className="popup__form-input popup__form-input_link"
+        id="url-inpt"
+        type="url"
+        placeholder="Ваша ссылка"
+        name="link"
+        required
+        onChange={handleAddLink}
+        value={link || ""}
+      />
+      <span className="popup__form-inpt-err url-inpt-error" id="url-inpt-error"></span>
     </PopupWithForm>
-  );
-}
+  )
+};
 
-export default AddPlacePopup;
+export default PopupNewCardAdd;

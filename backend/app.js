@@ -9,9 +9,6 @@ const errProcess = require('./middlewares/errorsProcess');
 const cors = require('./middlewares/cors');
 const { errLog, reqLog } = require('./middlewares/logger');
 
-// const bcrypt = require('bcryptjs');
-// const User = require('./models/user');
-
 // =====================================================
 // Слушаем 3000 порт
 // const { PORT = 3000 } = process.env;
@@ -57,6 +54,13 @@ app.use((req, res, next) => {
   next();
 });
 */
+// =============================================
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('crash-test');
+  }, 0);
+});
+// =============================================
 
 app.use(express.json());
 app.use(cookieParser());

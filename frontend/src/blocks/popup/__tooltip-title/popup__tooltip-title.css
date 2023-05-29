@@ -1,4 +1,4 @@
-.popup__info-tooltip-title {
+.popup__tooltip-title {
   font-size: 24px;
   font-weight: 900;
   line-height: 28px;
@@ -9,7 +9,7 @@
 }
 
 @media screen and (max-width: 680px) {
-  .popup__info-tooltip-title {
+  .popup__tooltip-title {
     font-size: 18px;
     line-height: 20px;
     padding: 25px 22px 0 22px;

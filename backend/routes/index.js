@@ -6,6 +6,7 @@ const notFound = require('./notFound');
 const signin = require('./signin');
 const signup = require('./signup');
 const auth = require('../middlewares/auth');
+// добавил краш-тест в app.js
 
 router.use('/users', auth, users);
 router.use('/cards', auth, cards);

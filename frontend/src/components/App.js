@@ -71,18 +71,26 @@ function App() {
     setIsAcceptPopupOpen(true);
     setCardDel(card);
   };
-
+  
   // Обрабатываем клик по лайку
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    auth.changeLikeStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) => state.map((i) => (i._id === card._id ? newCard : i)));
-      })
-      .catch((err) => {
+  const handleCardLike = useCallback(
+    async (card) => {
+      const isLiked = card.likes.some((item) => item === currentUser._id);
+      try {
+        const data = await auth.changeLikeStatus(card._id, isLiked);
+        if (data) {
+          setCards((state) =>
+            state.map((item) => (item._id === card._id ? data : item))
+          );
+        }
+      } catch (err) {
         console.log(err);
-      })
-  };
+      }
+    },
+    [currentUser._id]
+  );
+
+
   //удаление карточки 
   const handleCardDel = (card) => {
     setAcceptPopupButtonText(true);

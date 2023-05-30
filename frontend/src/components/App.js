@@ -13,7 +13,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import api from '../utils/api.js';
+// import api from '../utils/api.js';
 import PopupAccept from './PopupAccept.js';
 import * as auth from '../utils/auth.js';
 import ProtectedRouteElement from "./ProtectedRoute.js";
@@ -43,12 +43,13 @@ function App() {
 
   useEffect(() => {
     isLogged &&
-      Promise.all([api.getUserInfo(), api.getInitCards()])
+      Promise.all([auth.getUserInfo(), auth.getInitCards()])
         .then(([userData, cardsData]) => {
           setCurrentUser(userData);
           //setUserName(userData.name);
           //setUserActivity(userData.about);
-          setCards(cardsData);
+          console.log("params");
+          setCards(cardsData.reverse());
         })
         .catch((err) => { console.log(err); })
         .finally(() => { console.log("loading promise") });
@@ -74,7 +75,7 @@ function App() {
   // Обрабатываем клик по лайку
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api.changeLikeStatus(card._id, !isLiked)
+    auth.changeLikeStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) => state.map((i) => (i._id === card._id ? newCard : i)));
       })
@@ -85,7 +86,7 @@ function App() {
   //удаление карточки 
   const handleCardDel = (card) => {
     setAcceptPopupButtonText(true);
-    api.deleteCard(card._id)
+    auth.deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((i) => i._id !== card._id));
         setCardDel({});
@@ -102,7 +103,7 @@ function App() {
   //Обновляем информацию пользователя
   const updateUserInfo = (data) => {
     setIsEditProfilePopupChanging(true);
-    api.addInfo(data)
+    auth.addInfo(data)
       .then((newData) => { setCurrentUser(newData); })
       .then(() => { closePopups(); })
       .catch((err) => { console.log(err); })
@@ -111,7 +112,7 @@ function App() {
   //Обновляем аватарку
   const updateAvatar = (data) => {
     setIsEditAvatarPopupChanging(true);
-    api.addAvatar(data)
+    auth.addAvatar(data)
       .then((newData) => { setCurrentUser(newData); })
       .then(() => { closePopups(); })
       .catch((err) => { console.log(err); })
@@ -120,7 +121,7 @@ function App() {
 
   const handleAddCardSubmit = (data) => {
     setIsAddPlacePopupChanging(true)
-    api.addNewCard(data)
+    auth.addNewCard(data)
       .then((newData) => { setCards([newData, ...cards]); })
       .then(() => { closePopups(); })
       .catch((err) => { console.log(err); })
@@ -233,14 +234,29 @@ function App() {
     } */
   }, [navigate]);
 
-  useEffect(() => { checkAuth(); }, [checkAuth]);
-
-  const onSignOut = useCallback(() => {
-    localStorage.removeItem("jwt");
+/*
+  const onSignOut = useCallback( async () => {
+    // localStorage.removeItem("jwt");
     setIsLoggedIn(false);
     setMailName("");
     navigate("/sign-in", { replace: true });
+  }, [navigate]); */
+
+  const onSignOut = useCallback(async () => {
+    try {
+      const data = await auth.logout();
+      if (data) {
+        setIsLoggedIn(false);
+        setMailName("");
+        navigate("/sign-in", { replace: true });
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }, [navigate]);
+
+
+  useEffect(() => { checkAuth(); }, [checkAuth]);
 
   return (
 

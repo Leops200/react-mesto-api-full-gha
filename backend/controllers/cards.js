@@ -14,7 +14,7 @@ const Forbidden = require('../errors/Forbidden');
 
 module.exports.getAllCards = (req, res, next) => {
   Card.find({})
-    .populate(['owner', 'likes'])
+    // .populate(['owner', 'likes'])
     .then((cards) => res.send(cards))
     .catch(next);
 };
@@ -24,7 +24,7 @@ module.exports.createCards = (req, res, next) => {
   const { name, link } = req.body;
   const ownerId = req.user._id;
   Card.create({ name, link, owner: ownerId })
-    .then((card) => card.populate('owner'))
+    // .then((card) => card.populate('owner'))
     .then((card) => res.status(CREATED_CODE).send(card))
     .catch(next);
 };

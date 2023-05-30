@@ -1,4 +1,5 @@
-const BASE_URL = "https://api.mymesto15front.nomoredomains.monster";
+// https://api.mymesto15front.nomoredomains.monster
+const BASE_URL = "http://localhost:3001";
 
 class Api {
   constructor(options) {
@@ -18,17 +19,15 @@ _makeRequest(url, options) {
   return fetch(url, options).then(this._checkRes)
 }
 
-  getInitCards() {
+  /* getInitCards() {
     return this._makeRequest(`${this._baseUrl}/cards`, {
       headers: this._headers
     });
-  }
+  } */
 
-  getUserInfo() {
-    return this._makeRequest(`${this._baseUrl}/users/me`, {
-      headers: this._headers
-    });
-  }
+  /* getUserInfo() {
+    return this._makeRequest(`${this._baseUrl}/users/me`, "GET");
+  } 
 
   addAvatar(data) {
     console.log('avatar data:');
@@ -53,6 +52,7 @@ _makeRequest(url, options) {
     })
   };
   
+  
   //добавляем карточку
   addNewCard(data) {
     return this._makeRequest(`${this._baseUrl}/cards`, {
@@ -71,6 +71,7 @@ _makeRequest(url, options) {
       headers: this._headers
     })
   };
+  */
 /*
   addCardLike(cardId) {
     return this._makeRequest(`${this._baseUrl}/cards/${cardId}/likes`, {

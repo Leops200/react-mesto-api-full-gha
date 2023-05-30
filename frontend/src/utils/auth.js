@@ -1,7 +1,8 @@
 
-const BASE_AUTH_URL = "https://api.mymesto15front.nomoredomains.monster";
+const BASE_AUTH_URL = "http://localhost:3001";
 // http://localhost:3001
-//https://auth.nomoreparties.co
+// https://auth.nomoreparties.co
+// https://api.mesto.ld-webdev.nomoredomains.monster
 
 function makeRequest(url, method, body) {
   const headers = { "Content-Type": "application/json" };
@@ -29,9 +30,46 @@ export function login({ password, email }) {
   return makeRequest("/signin", "POST", { password, email });
 }
 
-export function checkToken(token) {
-  return makeRequest("/users/me", "GET", undefined, token);
+export function logout() {
+  return makeRequest("/users/me", "DELETE");
 }
+
+export function checkToken() {
+  return makeRequest("/users/me", "GET",);
+}
+
+export function getUserInfo() {
+  return makeRequest(`/users/me`, "GET");
+}
+
+export function addInfo({ name, about }) {
+  return makeRequest("/users/me", "PATCH", { name, about });
+}
+
+export function addAvatar({ avatar }) {
+  return makeRequest("/users/me/avatar", "PATCH", { avatar });
+}
+
+// ==== cards ==============
+
+export function getInitCards() {
+  return makeRequest(`/cards`, "GET");
+}
+
+export function addNewCard({ name, link }) {
+  return makeRequest("/cards", "POST", { name, link });
+}
+
+export function changeLikeStatus(id, isLiked) {
+  let method;
+  isLiked ? (method = "DELETE") : (method = "PUT");
+  return makeRequest(`/cards/${id}/likes`, method);
+}
+
+export function deleteCard(id) {
+  return makeRequest(`/cards/${id}`, "DELETE");
+}
+
 
 /*
 class Api {

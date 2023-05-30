@@ -1,11 +1,11 @@
-import {useContext} from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
-function Card({card, onCardClick, onCardDelete, onCardLike}) {
+function Card({ card, onCardClick, onCardDelete, onCardLike }) {
 
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const isOwn = card.owner === currentUser._id;
+  const isLiked = card.likes.some((item) =>  item === currentUser._id );
 
   function handleClick() {
     onCardClick(card);
@@ -19,7 +19,7 @@ function Card({card, onCardClick, onCardDelete, onCardLike}) {
     onCardLike(card);
   }
 
-  return(
+  return (
     <div className="card card-template">
       <div>
         {isOwn && (
@@ -27,7 +27,7 @@ function Card({card, onCardClick, onCardDelete, onCardLike}) {
         )}
       </div>
       <img src={card.link} alt={card.name} className="card__image"
-      onClick={handleClick}/>
+        onClick={handleClick} />
       <div className="card__about">
         <h2 className="card__title">{card.name}</h2>
         <div className="card__like">

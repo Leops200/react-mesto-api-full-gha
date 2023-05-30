@@ -47,8 +47,11 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((user) => {
-      const newUser = { ...user.toObject(), password: undefined };
-      res.status(CREATED_CODE).send({ data: newUser });
+      const data = user.toObject();
+      delete data.password;
+      res.status(CREATED_CODE).send(data);
+      // const newUser = { ...user.toObject(), password: undefined };
+      // res.status(CREATED_CODE).send({ data: newUser });
     })
     .catch(next);
 };
@@ -92,12 +95,22 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
       });
       res.send({ message: 'Вход выполнен' });
-      console.log('выдан токен:');
-      console.log(token);
-      console.log(`userId: ${user._id}`);
+      // console.log('выдан токен:');
+      // console.log(token);
+      // console.log(`userId: ${user._id}`);
     })
     .catch(next);
 };
+// =====================================================
+module.exports.logout = (req, res) => {
+  res.cookie('jwt', 'none', {
+    maxAge: 5000,
+    httpOnly: true,
+    sameSite: true,
+  });
+  res.send({ message: 'Unauth' });
+};
+
 /* User.create({ name, about, avatar })
     .then((user) => res.status(CREATED_CODE)
       .send(user))

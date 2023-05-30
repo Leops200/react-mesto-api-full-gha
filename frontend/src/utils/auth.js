@@ -1,8 +1,7 @@
 
-const BASE_AUTH_URL = "http://localhost:3001";
+const BASE_AUTH_URL = "https://api.mymesto15front.nomoredomains.monster";
 // http://localhost:3001
 // https://auth.nomoreparties.co
-// https://api.mesto.ld-webdev.nomoredomains.monster
 
 function makeRequest(url, method, body) {
   const headers = { "Content-Type": "application/json" };
@@ -61,10 +60,19 @@ export function addNewCard({ name, link }) {
 }
 
 export function changeLikeStatus(id, isLiked) {
-  let method;
-  isLiked ? (method = "DELETE") : (method = "PUT");
-  return makeRequest(`/cards/${id}/likes`, method);
-}
+  if (isLiked) {
+    return makeRequest(`${this._baseUrl}/cards/${id}/likes`, {
+      headers: this._headers,
+        method: "PUT",
+    });
+  } else {
+    return makeRequest(`${this._baseUrl}/cards/${id}/likes`, {
+      headers: this._headers,
+      method: "DELETE",
+    });
+  }
+};
+
 
 export function deleteCard(id) {
   return makeRequest(`/cards/${id}`, "DELETE");

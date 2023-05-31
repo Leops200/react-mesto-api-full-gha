@@ -15,7 +15,7 @@ import ImagePopup from './ImagePopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 // import api from '../utils/api.js';
 import PopupAccept from './PopupAccept.js';
-import * as auth from '../utils/auth.js';
+import * as api from '../utils/api.js';
 import ProtectedRouteElement from "./ProtectedRoute.js";
 import InfoTooltip from "./InfoTooltip.js";
 
@@ -36,14 +36,14 @@ function App() {
   const [cardDel, setCardDel] = useState({});
   const [selectedCard, setSelectedCard] = useState({});
   const [mailName, setMailName] = useState("");
-  const navigate = useNavigate();
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [infoTooltipStatus, setInfoTooltipStatus] = useState("");
+  const navigate = useNavigate();
   // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     isLogged &&
-      Promise.all([auth.getUserInfo(), auth.getInitCards()])
+      Promise.all([api.getUserInfo(), api.getInitCards()])
         .then(([userData, cardsData]) => {
           setCurrentUser(userData);
           //setUserName(userData.name);
@@ -54,6 +54,7 @@ function App() {
         .catch((err) => { console.log(err); })
         .finally(() => { console.log("loading promise") });
   }, [isLogged]);
+  
 
   const handleEditProfileClick = () => { setIsEditProfilePopupOpen(true); };
 
@@ -73,28 +74,25 @@ function App() {
   };
   
   // Обрабатываем клик по лайку
-  const handleCardLike = useCallback(
-    async (card) => {
-      const isLiked = card.likes.some((item) => item === currentUser._id);
-      try {
-        const data = await auth.changeLikeStatus(card._id, isLiked);
-        if (data) {
-          setCards((state) =>
-            state.map((item) => (item._id === card._id ? data : item))
-          );
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [currentUser._id]
-  );
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i === currentUser._id);
+    api
+      .changeLikeStatus(card._id, !isLiked,)
+      .then((newCard) => {
+        const newCards = cards.map(c => (c === card._id ? newCard.data : c));
+        setCards(newCards);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
 
   //удаление карточки 
   const handleCardDel = (card) => {
     setAcceptPopupButtonText(true);
-    auth.deleteCard(card._id)
+    api.deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((i) => i._id !== card._id));
         setCardDel({});
@@ -111,7 +109,7 @@ function App() {
   //Обновляем информацию пользователя
   const updateUserInfo = (data) => {
     setIsEditProfilePopupChanging(true);
-    auth.addInfo(data)
+    api.addInfo(data)
       .then((newData) => { setCurrentUser(newData); })
       .then(() => { closePopups(); })
       .catch((err) => { console.log(err); })
@@ -120,7 +118,7 @@ function App() {
   //Обновляем аватарку
   const updateAvatar = (data) => {
     setIsEditAvatarPopupChanging(true);
-    auth.addAvatar(data)
+    api.addAvatar(data)
       .then((newData) => { setCurrentUser(newData); })
       .then(() => { closePopups(); })
       .catch((err) => { console.log(err); })
@@ -129,7 +127,7 @@ function App() {
 
   const handleAddCardSubmit = (data) => {
     setIsAddPlacePopupChanging(true)
-    auth.addNewCard(data)
+    api.addNewCard(data)
       .then((newData) => { setCards([newData, ...cards]); })
       .then(() => { closePopups(); })
       .catch((err) => { console.log(err); })
@@ -179,7 +177,7 @@ function App() {
   // авторизация =========================================
   const onLogin = useCallback(async (email, password) => {
     try {
-      const data = await auth.login(email, password);
+      const data = await api.login(email, password);
       if (data) {
         //localStorage.setItem("jwt", data.token);
         setIsLoggedIn(true);
@@ -199,7 +197,7 @@ function App() {
   // регистрация ============================================
   const onRegister = useCallback(async (email, password) => {
     try {
-      const data = await auth
+      const data = await api
         .registration(email, password);
       if (data) {
         setInfoTooltipStatus("ok")
@@ -226,12 +224,12 @@ function App() {
     // const token = localStorage.getItem("jwt");
     // if (token) {
       try {
-        const user = await auth.checkToken();
+        const user = await api.checkToken();
         if (!user) {
           throw console.log("invalid userData");
         }
         setIsLoggedIn(true);
-        setMailName(user.data.email);
+        setMailName(user.email);
         navigate("/", { replace: true });
       }
       catch (err) { console.log(err) }
@@ -252,7 +250,7 @@ function App() {
 
   const onSignOut = useCallback(async () => {
     try {
-      const data = await auth.logout();
+      const data = await api.logout();
       if (data) {
         setIsLoggedIn(false);
         setMailName("");

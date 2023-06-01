@@ -1,5 +1,5 @@
 
-const BASE_AUTH_URL = "http://localhost:3001";
+const BASE_AUTH_URL = "https://api.mymesto15front.nomoredomains.monster";
 // http://localhost:3001
 // https://auth.nomoreparties.co
 // https://api.mymesto15front.nomoredomains.monster

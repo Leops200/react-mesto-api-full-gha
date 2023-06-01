@@ -34,22 +34,23 @@ module.exports.createCards = (req, res, next) => {
 const upLikes = (req, res, upData, next) => {
   Card.findByIdAndUpdate(req.params.cardId, upData, { new: true })
     .orFail()
-    .then((card) => card.populate(['owner', 'likes']))
+    /* .populate('likes')
+    .populate('owner') */
     .then((card) => res.send(card))
     .catch(next);
 };
 //= =====================================================
 
 module.exports.addLike = (req, res, next) => {
-  const ownerId = req.user._id;
-  const newData = { $addToSet: { likes: ownerId } };
+  // const ownerId = req.user._id;
+  const newData = { $addToSet: { likes: req.user._id } };
   upLikes(req, res, newData, next);
 };
 //= =====================================================
 
 module.exports.removeLike = (req, res, next) => {
-  const ownerId = req.user._id;
-  const newData = { $pull: { likes: ownerId } };
+  // const ownerId = req.user._id;
+  const newData = { $pull: { likes: req.user._id } };
   upLikes(req, res, newData, next);
 };
 //= =====================================================

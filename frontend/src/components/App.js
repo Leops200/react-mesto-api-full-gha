@@ -75,20 +75,19 @@ function App() {
   
   // Обрабатываем клик по лайку
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i === currentUser._id);
+    const isLiked = card.likes.some((i) => { return i === currentUser._id });
     api
-      .changeLikeStatus(card._id, !isLiked,)
+      .changeLikeStatus(card._id, !isLiked)
       .then((newCard) => {
-        const newCards = cards.map(c => (c === card._id ? newCard.data : c));
-        setCards(newCards);
-
+        setCards((state) =>
+            state.map((item) => (item._id === card._id ? newCard : item))
+          );
       })
       .catch((error) => {
         console.log(error);
       });
   }
-
-
+    
   //удаление карточки 
   const handleCardDel = (card) => {
     setAcceptPopupButtonText(true);
